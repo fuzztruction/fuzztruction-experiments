@@ -1,0 +1,45 @@
+# zip with encryption and then unzip.
+
+work-directory: "/tmp/zip_unzip"
+input-directory: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/configurations/zip_unzip/inputs_ft"
+jail-uid: 606400022
+jail-gid: 606400022
+timeout: 50ms
+
+source:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/unzip/ft/bzip2-1.0.8"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/unzip/ft/zip-3.0/zip"
+    arguments: ["-e", "-P", "PASSWORD", "-1", "$$", "@@"]
+    input-type: file
+    output-type: file
+    output-suffix: ".zip"
+    log-stdout: false
+    log-stderr: false
+
+sink:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/unzip/afl/bzip2-1.0.8/debian/tmp/lib"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/unzip/afl/unzip-6.0/unzip"
+    arguments: ["-p", "-P", "PASSWORD", "@@"]
+    input-type: file
+    output-type: None
+    log-stdout: false
+    log-stderr: false
+    allow-unstable-sink: true
+
+afl++:
+    input-dir: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/configurations/zip_unzip/inputs_other"
+
+symcc:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/unzip/symcc/bzip2-1.0.8/debian/tmp/lib"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/unzip/symcc/unzip-6.0/unzip"
+    afl-bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/unzip/afl_symcc/unzip-6.0/unzip"
+    afl-bin-env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/unzip/afl_symcc/bzip2-1.0.8/debian/tmp/lib"
+
+vanilla:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/unzip/vanilla/unzip-6.0/unzip"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/unzip/vanilla/unzip-6.0/unzip"

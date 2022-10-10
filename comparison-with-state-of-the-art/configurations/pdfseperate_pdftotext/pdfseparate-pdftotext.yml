@@ -1,0 +1,44 @@
+work-directory: "/tmp/pdfseparate_pdftotext"
+input-directory: "./inputs_ft"
+jail-uid: 606400022
+jail-gid: 606400022
+timeout: 50ms
+
+source:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/ft/poppler-0.86.1/obj-x86_64-linux-gnu/"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/ft/poppler-0.86.1/obj-x86_64-linux-gnu/utils/pdfseparate"
+    arguments: ["@@", "$$"]
+    input-type: file
+    output-type: file
+    output-suffix: ".pdf"
+    log-stdout: false
+    log-stderr: false
+
+sink:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/afl/poppler-0.86.1/obj-x86_64-linux-gnu/"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/afl/poppler-0.86.1/obj-x86_64-linux-gnu/utils/pdftotext"
+    arguments: ["@@"]
+    input-type: file
+    output-type: none
+    log-stdout: false
+    log-stderr: false
+    allow-unstable-sink: true
+
+afl++:
+    input-dir: "./inputs_other"
+
+symcc:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/symcc/poppler-0.86.1/obj-x86_64-linux-gnu/"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/symcc/poppler-0.86.1/obj-x86_64-linux-gnu/utils/pdftotext"
+    afl-bin-env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/afl_symcc/poppler-0.86.1/obj-x86_64-linux-gnu/"
+    afl-bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/afl_symcc/poppler-0.86.1/obj-x86_64-linux-gnu/utils/pdftotext"
+
+
+vanilla:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/vanilla/poppler-0.86.1/obj-x86_64-linux-gnu/"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/vanilla/poppler-0.86.1/obj-x86_64-linux-gnu/utils/pdftotext"

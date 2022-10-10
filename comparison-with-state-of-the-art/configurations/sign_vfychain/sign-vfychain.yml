@@ -1,0 +1,48 @@
+# zip with encryption and then unzip.
+
+work-directory: "/tmp/sign_vfychain"
+input-directory: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/configurations/sign_vfychain/inputs_ft"
+jail-uid: 606400022
+jail-gid: 606400022
+timeout: 500ms
+
+source:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/openssl/ft/openssl"
+        - OPENSSL_CONF: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/openssl/ft/openssl/apps/openssl.cnf"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/openssl/ft/openssl/apps/openssl"
+    arguments: ["req", "-x509", "-new", "-key", "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/configurations/sign_vfychain/sigkey.key", "-subj", "/CN=ABC", "-sha256", "-outform", "der", "-out", $$]
+    input-type: none
+    output-type: file
+    log-stdout: false
+    log-stderr: false
+
+sink:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/dist/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/lib"
+        - AFL_PRELOAD: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/util/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libnssutil3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nspr/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/lib/libc/src/libplc4.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nspr/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/lib/ds/libplds4.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nspr/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/pr/src/libnspr4.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/ssl/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libssl3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/smime/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libsmime3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/nss/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libnss3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/sqlite/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libsqlite3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/softoken/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libsoftokn3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/freebl/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/Linux_SINGLE_SHLIB/libfreeblpriv3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/dist/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/lib/libnssckbi.so"
+        - LD_PRELOAD: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/util/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libnssutil3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nspr/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/lib/libc/src/libplc4.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nspr/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/lib/ds/libplds4.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nspr/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/pr/src/libnspr4.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/ssl/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libssl3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/smime/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libsmime3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/nss/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libnss3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/sqlite/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libsqlite3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/softoken/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libsoftokn3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/freebl/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/Linux_SINGLE_SHLIB/libfreeblpriv3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/dist/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/lib/libnssckbi.so"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/cmd/vfychain/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/vfychain"
+    arguments: ["-a", "@@"]
+    input-type: file
+    output-type: None
+    log-stdout: false
+    log-stderr: false
+    allow-unstable-sink: true
+
+afl++:
+    input-dir: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/configurations/sign_vfychain/inputs_other"
+
+symcc:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/symcc/dist/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/lib"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/symcc/nss/cmd/vfychain/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/vfychain"
+    afl-bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl_symcc/nss/cmd/vfychain/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/vfychain"
+    afl-bin-env:
+        - AFL_PRELOAD: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/util/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libnssutil3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nspr/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/lib/libc/src/libplc4.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nspr/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/lib/ds/libplds4.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nspr/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/pr/src/libnspr4.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/ssl/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libssl3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/smime/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libsmime3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/nss/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libnss3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/sqlite/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libsqlite3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/softoken/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/libsoftokn3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/nss/lib/freebl/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/Linux_SINGLE_SHLIB/libfreeblpriv3.so:/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl/dist/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/lib/libnssckbi.so"
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/afl_symcc/dist/Linux5.4_x86_64_clang-11_glibc_PTH_64_OPT.OBJ/lib"
+
+vanilla:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/vanilla/dist/Linux5.4_x86_64_clang-11_glibc_PTH_64_DBG.OBJ/lib"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/nss/vanilla/nss/cmd/vfychain/Linux5.4_x86_64_clang-11_glibc_PTH_64_DBG.OBJ/vfychain"

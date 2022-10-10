@@ -1,0 +1,66 @@
+# Timeout for each individual run (\d+[smhd])
+timeout: 5m
+
+# ID of the first run per target.
+# Used to schedule multiple runs for a single target.
+first_run_id: 1
+
+# Last run ID (inclusive)
+last_run_id: 1
+
+# Fuzzers to evaluate each target for.
+fuzzers:
+    - Fuzztruction
+    - Fuzztruction-No-AFL
+    - WEIZZ
+    - SYMCC
+    - AFL++
+
+# Total number of cores used on this machine for evaluation.
+cores-total: 40
+
+# Cores assigned to each target. Must be >= 2 to allow approaches combining multiple
+# fuzzers to execute properly.
+cores-per-target: 2
+
+# Path where the results are stored.
+results-path: '~/shared/eval-results'
+
+# Targets that the evaluation can be conducted for.
+targets:
+    # Identifier used in the paper: 7zip
+    '7zip_7zip':
+        config: ./../configurations/7zip_7zip/7z-7z.yml
+    # Identifier used in the paper: 7zip^lock
+    '7zip-enc_7zip-dec':
+        config: ./../configurations/7zip-enc_7zip-dec/7z-7z-enc.yml
+    # Identifier used in the paper: dsa^lock
+    'gendsa_dsa':
+        config: ./../configurations/gendsa_dsa/gendsa-dsa.yml
+    # Identifier used in the paper: rsa^lock
+    'genrsa_rsa':
+        config: ./../configurations/genrsa_rsa/genrsa-rsa.yml
+    # Identifier used in the paper: e2fsck
+    'mke2fs_e2fsck':
+        config: ./../configurations/mke2fs_e2fsck/mke2fs-e2fsck.yml
+    # Identifier used in the paper: objdump
+    'objcopy_objdump':
+        config: ./../configurations/objcopy_objdump/objcopy-objdump.yml
+    # Identifier used in the paper: readelf
+    'objcopy_readelf':
+        config: ./../configurations/objcopy_readelf/objcopy-readelf.yml
+    # Identifier used in the paper: pdftotext
+    'pdfseperate_pdftotext':
+        config: ./../configurations/pdfseperate_pdftotext/pdfseparate-pdftotext.yml
+    # Identifier used in the paper: pngtopng
+    'pngtopng_pngtopng':
+        config: ./../configurations/pngtopng_pngtopng/pngtopng-pngtopng.yml
+    # Identifier used in the paper: pdftotext^lock
+    'qpdf-enc_pdftotext-dec':
+        config: ./../configurations/qpdf-enc_pdftotext-dec/qpdf-enc-pdftotext.yml
+    # Identifier used in the paper: vfychain
+    'sign_vfychain':
+        config: ./../configurations/sign_vfychain/sign-vfychain.yml
+    # Identifier used in the paper: unzip
+    'zip_unzip':
+        config: ./../configurations/zip_unzip/zip-unzip.yml

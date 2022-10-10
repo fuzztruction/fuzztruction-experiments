@@ -1,0 +1,58 @@
+# Directory where all fuzzing data is stored. It should be located in the /tmp directory
+# since file system operations considerably slow down Fuzztruction.
+# You should consider resizing/tmp and back it by addition swap since the directory
+# can grow quite large.
+work-directory: "/tmp/pngtopng_pngtopng"
+# Inputs passed to the generator. For applications not consuming any data, this must be some file; thus Fuzztruction stops
+# to complain.
+input-directory: "./inputs_ft"
+# IDs of the user `user` (retrieved via `id`). They are used as the target ids for dropping privileges for child processes.
+jail-uid: 606400022
+jail-gid: 606400022
+timeout: 50ms
+
+# The generator configuration.
+source:
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/libpng/ft/libpng/contrib/examples/pngtopng"
+    # @@: Path to the input file.
+    # $$: Path to the output file.
+    arguments: ["@@", "$$"]
+    # Type of input: file, stdin, none
+    input-type: file
+    # Type of output: file, stdout
+    output-type: file
+    log-stdout: false
+    log-stderr: false
+
+# The consumer configuration.
+sink:
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/libpng/afl/libpng/contrib/examples/pngtopng"
+    arguments: ["@@", "/dev/null"]
+    input-type: file
+    output-type: file
+    log-stdout: false
+    log-stderr: false
+    # Whether to add unstable (inputs with varying coverage) to the queue.
+    allow-unstable-sink: true
+
+# AFL++ configuration (optional)
+afl++:
+    # Inputs used by AFL++ to fuzz the consumer.
+    input-dir: "./inputs_other"
+
+# SYMCC configuration (optional)
+symcc:
+    # Custom environment variables for the target. It can also be used for the source, sink, afl++, and vanilla sections.
+    # This is mostly  used to set LD_PRELOAD; thus the loader loads the instrumented libraries instead of the ones installed
+    # in the system's search path. Please see other `YAML` files for examples,
+    env:
+        - NONE: "None"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/libpng/symcc/libpng/contrib/examples/pngtopng"
+    # SYMCC needs a custom afl++ binary, thus we need a separate config entry here.
+    afl-bin-env:
+        - NONE: "None"
+    afl-bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/libpng/afl_symcc/libpng/contrib/examples/pngtopng"
+
+# Vanilla binary (uninstrumented), used for coverage computation and fuzzing via WEIZZ.
+vanilla:
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/libpng/vanilla/libpng/contrib/examples/pngtopng"

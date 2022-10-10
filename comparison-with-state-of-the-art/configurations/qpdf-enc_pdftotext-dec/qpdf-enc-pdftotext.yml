@@ -1,0 +1,45 @@
+# zip with encryption and then unzip.
+
+work-directory: "/tmp/qpdf-enc_pdftotext"
+input-directory: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/configurations/qpdf-enc_pdftotext-dec/inputs_ft"
+jail-uid: 606400022
+jail-gid: 606400022
+timeout: 50ms
+
+source:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/ft/qpdf-9.1.1/libqpdf/build/.libs"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/ft/qpdf-9.1.1/qpdf/build/.libs/qpdf"
+    arguments: ["--static-id", "--static-aes-iv", "--encrypt", "USERPASS", "OWNERPASS", "40", "--", "@@", "$$"]
+    input-type: file
+    output-type: file
+    output-suffix: ".pdf"
+    log-stdout: false
+    log-stderr: false
+
+sink:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/afl/poppler-0.86.1/obj-x86_64-linux-gnu/"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/afl/poppler-0.86.1/obj-x86_64-linux-gnu/utils/pdftotext"
+    arguments: ["-upw", "USERPASS", "-opw", "OWNERPASS", "-layout", "@@"]
+    input-type: file
+    output-type: none
+    log-stdout: false
+    log-stderr: false
+    allow-unstable-sink: true
+
+afl++:
+    input-dir: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/configurations/qpdf-enc_pdftotext-dec/inputs_other"
+
+symcc:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/symcc/poppler-0.86.1/obj-x86_64-linux-gnu/"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/symcc/poppler-0.86.1/obj-x86_64-linux-gnu/utils/pdftotext"
+    afl-bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/afl_symcc/poppler-0.86.1/obj-x86_64-linux-gnu/utils/pdftotext"
+    afl-bin-env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/afl_symcc/poppler-0.86.1/obj-x86_64-linux-gnu/"
+
+vanilla:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/vanilla/poppler-0.86.1/obj-x86_64-linux-gnu/"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/poppler_qpdf/vanilla/poppler-0.86.1/obj-x86_64-linux-gnu/utils/pdftotext"

@@ -1,0 +1,43 @@
+
+work-directory: "/tmp/gendsa_dsa"
+input-directory: "./inputs_ft"
+jail-uid: 606400022
+jail-gid: 606400022
+
+source:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/openssl/ft/openssl"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/openssl/ft/openssl/apps/openssl"
+    arguments: ["gendsa", "-passout", "pass:xxxx", "-des", "-out", "$$", "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/configurations/gendsa_dsa/dsaparm_8bit"]
+    input-type: none
+    output-type: file
+    log-stdout: false
+    log-stderr: false
+
+sink:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/openssl/afl/openssl"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/openssl/afl/openssl/apps/openssl"
+    arguments: ["dsa", "-in", "@@", "-passin", "pass:xxxx"]
+    input-type: file
+    output-type: None
+    log-stdout: false
+    log-stderr: false
+    allow-unstable-sink: true
+
+afl++:
+    input-dir: "./inputs_other"
+
+symcc:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/openssl/symcc/openssl"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/openssl/symcc/openssl/apps/openssl"
+    afl-bin-env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/openssl/afl_symcc/openssl"
+    afl-bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/openssl/afl_symcc/openssl/apps/openssl"
+
+
+vanilla:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/openssl/vanilla/openssl"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/openssl/vanilla/openssl/apps/openssl"

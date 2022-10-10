@@ -1,0 +1,44 @@
+
+work-directory: "/tmp/mke2fs_e2fsck"
+input-directory: "./ft_inputs"
+jail-uid: 606400022
+jail-gid: 606400022
+timeout: 50ms
+
+source:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/e2fsprogs/ft/e2fsprogs-1.45.5/debian/tmp/lib/x86_64-linux-gnu/"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/e2fsprogs/ft/e2fsprogs-1.45.5/debian/e2fsprogs/sbin/mke2fs"
+    arguments: ["-t", "ext4", "@$"]
+    input-type: file
+    output-type: file
+    log-stdout: false
+    log-stderr: false
+
+sink:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/e2fsprogs/afl/e2fsprogs-1.45.5/debian/tmp/lib/x86_64-linux-gnu/"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/e2fsprogs/afl/e2fsprogs-1.45.5/debian/e2fsprogs/sbin/e2fsck"
+    arguments: ["-p", "-f", "@@"]
+    input-type: file
+    output-type: stdout
+    log-stdout: false
+    log-stderr: false
+    allow-unstable-sink: true
+
+afl++:
+    input-dir: "./other_inputs"
+
+symcc:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/e2fsprogs/symcc/e2fsprogs-1.45.5/debian/tmp/lib/x86_64-linux-gnu/"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/e2fsprogs/symcc/e2fsprogs-1.45.5/debian/e2fsprogs/sbin/e2fsck"
+    afl-bin-env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/e2fsprogs/afl_symcc/e2fsprogs-1.45.5/debian/tmp/lib/x86_64-linux-gnu/"
+    afl-bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/e2fsprogs/afl_symcc/e2fsprogs-1.45.5/debian/e2fsprogs/sbin/e2fsck"
+
+
+vanilla:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/e2fsprogs/vanilla/e2fsprogs-1.45.5/debian/tmp/lib/x86_64-linux-gnu/"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/e2fsprogs/vanilla/e2fsprogs-1.45.5/debian/e2fsprogs/sbin/e2fsck"

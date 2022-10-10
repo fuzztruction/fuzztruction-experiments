@@ -1,0 +1,50 @@
+
+work-directory: "/tmp/7zip_7zip"
+input-directory: "./inputs_ft"
+jail-uid: 606400022
+jail-gid: 606400022
+timeout: 10ms
+
+source:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/7zip/ft/p7zip-16.02+dfsg/bin/"
+        - LD_PRELOAD: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/7zip/ft/p7zip-16.02+dfsg/bin/7z.so"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/7zip/ft/p7zip-16.02+dfsg/bin/7z"
+    arguments: ["a", "-t7z", "-mx=1", "-ms=off", "-m0=LZMA", "-mhe=off", "-si", "-y", "$$"]
+    input-type: stdin
+    output-type: file
+    output-suffix: ".zip"
+    log-stdout: false
+    log-stderr: false
+
+sink:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/7zip/afl/p7zip-16.02+dfsg/bin"
+        - LD_PRELOAD: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/7zip/afl/p7zip-16.02+dfsg/bin/7z.so"
+        - AFL_PRELOAD: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/7zip/afl/p7zip-16.02+dfsg/bin/7z.so"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/7zip/afl/p7zip-16.02+dfsg/bin/7z"
+    arguments: ["e", "-so", "-y", "@@"]
+    input-type: file
+    output-type: None
+    log-stdout: false
+    log-stderr: false
+    allow-unstable-sink: true
+
+afl++:
+    input-dir: "./inputs_other"
+
+symcc:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/7zip/symcc/p7zip-16.02+dfsg/bin"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/7zip/symcc/p7zip-16.02+dfsg/bin/7z"
+    afl-bin-env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/7zip/afl_symcc/p7zip-16.02+dfsg/bin"
+        - AFL_PRELOAD: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/7zip/afl_symcc/p7zip-16.02+dfsg/bin/7z.so"
+    afl-bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/7zip/afl_symcc/p7zip-16.02+dfsg/bin/7z"
+
+
+vanilla:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/7zip/vanilla/p7zip-16.02+dfsg/bin"
+        - LD_PRELOAD: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/7zip/vanilla/p7zip-16.02+dfsg/bin/7z.so"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/7zip/vanilla/p7zip-16.02+dfsg/bin/7z"

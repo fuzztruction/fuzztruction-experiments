@@ -1,0 +1,6 @@
+comparison-with-state-of-the-art/binaries/*/vanilla/
+comparison-with-state-of-the-art/binaries/*/afl/
+comparison-with-state-of-the-art/binaries/*/afl_symcc/
+comparison-with-state-of-the-art/binaries/*/ft/
+comparison-with-state-of-the-art/binaries/*/src/
+comparison-with-state-of-the-art/binaries/*/symcc/

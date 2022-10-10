@@ -1,0 +1,43 @@
+
+work-directory: "/tmp/objcopy_readelf"
+input-directory: "./inputs_ft"
+jail-uid: 606400022
+jail-gid: 606400022
+timeout: 50ms
+
+source:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/binutils/ft/binutils-2.34/builddir-single/bfd/.libs"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/binutils/ft/binutils-2.34/builddir-single/binutils/objcopy"
+    arguments: ["--strip-all", "-g", "--strip-unneeded", "--weaken" , "-D", "@@", "$$"]
+    input-type: file
+    output-type: file
+    log-stdout: false
+    log-stderr: false
+
+sink:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/binutils/afl/binutils-2.34/builddir-single/bfd/.libs"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/binutils/afl/binutils-2.34/builddir-single/binutils/.libs/readelf"
+    arguments: ["-a", "-W", "-I", "-z", "-D", "-c", "-n", "-u", "-g", "@@"]
+    input-type: file
+    output-type: "None"
+    log-stdout: false
+    log-stderr: false
+    allow-unstable-sink: true
+
+afl++:
+    input-dir: "./inputs_other"
+
+symcc:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/binutils/symcc/binutils-2.34/builddir-single/bfd/.libs"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/binutils/symcc/binutils-2.34/builddir-single/binutils/.libs/readelf"
+    afl-bin-env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/binutils/afl_symcc/binutils-2.34/builddir-single/bfd/.libs"
+    afl-bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/binutils/afl_symcc/binutils-2.34/builddir-single/binutils/.libs/readelf"
+
+vanilla:
+    env:
+        - LD_LIBRARY_PATH: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/binutils/vanilla/binutils-2.34/builddir-single/bfd/.libs"
+    bin-path: "/home/user/fuzztruction/fuzztruction-experiments/comparison-with-state-of-the-art/binaries/binutils/vanilla/binutils-2.34/builddir-single/binutils/.libs/readelf"
