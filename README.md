@@ -12,7 +12,7 @@ This folder contains scripts to build all binaries for all fuzzer configurations
 # Execute the given *command* for the target located in *target-path*.
 ./build.sh <target-path> <command>
 # Execute the given *command* for all targets in parallel.
-./build.sh <command>
+./build-all.sh <command>
 ```
 
 
